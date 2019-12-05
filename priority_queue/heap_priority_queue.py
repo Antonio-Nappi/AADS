@@ -103,6 +103,7 @@ class HeapPriorityQueue(PriorityQueueBase): # base class defines _Item
     return (item._key, item._value)
 
   def _increment_priority(self):
+    '''Increment by one the priority of all the element in the queue.'''
     for i in range(len(self._data)):
       if self._data[i]._key != -20:
         self._data[i]._key -= 1
