@@ -26,7 +26,7 @@ class PriorityQueueBase:
   #------------------------------ nested _Item class ------------------------------
   class _Item:
     """Lightweight composite to store priority queue items."""
-    __slots__ = '_key', '_value', '_name'
+    __slots__ = '_key', '_value'
 
     def __init__(self, k, v):
       self._key = k
@@ -36,7 +36,7 @@ class PriorityQueueBase:
       return self._key < other._key    # compare items based on their keys
 
     def __repr__(self):
-      return '({0},{1},{2})'.format(self._key, self._value, self._name)
+      return '({0},{1})'.format(self._key, self._value)
 
   #------------------------------ public behaviors ------------------------------
   def is_empty(self):                  # concrete method assuming abstract len

@@ -1,6 +1,4 @@
-import enum
-
-from priority_queue.heap_priority_queue import HeapPriorityQueue
+from priority_queue.adaptable_heap_priority_queue import AdaptableHeapPriorityQueue
 import time
 import random
 
@@ -11,7 +9,8 @@ def random_add(scheduler):
     task = ["CPU", "MEMORY", "I/O"]
     scheduler.add_job(random.randint(0, 39) - 20, (random.randint(0, 10), task[random.randint(0, 2)]+" "+str(random.randint(0,100))))
 
-class Scheduler(HeapPriorityQueue):
+
+class Scheduler(AdaptableHeapPriorityQueue):
 
     def __init__(self, slice_to_increment):
         '''
@@ -27,10 +26,12 @@ class Scheduler(HeapPriorityQueue):
         '''
         This method insert a new job in the Scheduler queue.
         :param k: is the priority of the job.
-        :param v: is the tuple that contains the job's name and how many time slices requires.
-        :raise PriorityNotAllowedExceptio: is the priority for the task is not a valid number.'''
+        :param v: is the tuple that contains the job's name, how many time slices requires and the time on which
+         this task was arrived in the queue.
+        :raise PriorityNotAllowedException: is the priority for the task is not a valid number.'''
         if -20 <= k <= 19:
-            self.add(k, v)
+            v2 = (v[0], v[1], self._number_time_slice)
+            self.add(k, v2)
         else:
             raise Exception("This Job has a priority not allowed.")
 
@@ -39,14 +40,27 @@ class Scheduler(HeapPriorityQueue):
         This method prints information about the current job in execution. After the value of time slices defined by the user
         it increments the priority. If the queue is empty an error message is printed.
         '''
-        try:
+        if not self.is_empty():
             job = self.remove_min()
             for i in range(job[1][0]):
                 print(job[1][1])
                 self._number_time_slice += 1
-                if self._number_time_slice % self._slice_to_increment == 0:
-                    self._increment_priority()
-        except:
+                for e in self._data:
+                    print("sono nel for")
+                    print("il numero di time slice è")
+                    print(self._number_time_slice)
+                    print("il valore di arrivo è")
+                    print(e._value[2])
+                    print("il valore dopo il quale incrementare è:")
+                    print(self._slice_to_increment)
+                    if (self._number_time_slice + e._value[2]) % self._slice_to_increment == 0:
+                        print("sono nell'if")
+                        print(e._key)
+                        self.update(e, e._key-1, e._value)
+                        print("dopo l'update")
+                        print(e._key)
+                        print("è buono?")
+        else:
             print("The scheduler has no tasks.")
 
 
@@ -58,7 +72,7 @@ scheduler = Scheduler(time_slice) #create a new scheduler with the desired time_
 for i in range(5):
     random_add(scheduler) #add five random job
 while 1:
-    if random.random() > 0.5: #if the random value is greater than the threshold add a new job
+    if random.random() > 0.3: #if the random value is greater than the threshold add a new job
         random_add(scheduler)
     scheduler.job_execution()
     time.sleep(4)
