@@ -2,13 +2,11 @@ from priority_queue.adaptable_heap_priority_queue import AdaptableHeapPriorityQu
 import time
 import random
 
-
 def random_add(scheduler):
     '''This function random adds a new task to the scheduler.
     The task could be one for the CPU, memory or I/0.'''
     task = ["CPU", "MEMORY", "I/O"]
-    scheduler.add_job(random.randint(0, 39) - 20, (random.randint(0, 10), task[random.randint(0, 2)]+" "+str(random.randint(0,100))))
-
+    scheduler.add_job(random.randint(0, 39) - 20, (random.randint(0, 100)+1, task[random.randint(0, 2)]+" "+str(random.randint(0,100) + 1)))
 
 class Scheduler(AdaptableHeapPriorityQueue):
 
@@ -26,9 +24,8 @@ class Scheduler(AdaptableHeapPriorityQueue):
         '''
         This method insert a new job in the Scheduler queue.
         :param k: is the priority of the job.
-        :param v: is the tuple that contains the job's name, how many time slices requires and the time on which
-         this task was arrived in the queue.
-        :raise PriorityNotAllowedException: is the priority for the task is not a valid number.'''
+        :param v: is the tuple that contains the job's name, how many time slices requires.
+        :raise Exception: is the priority for the task is not a valid number.'''
         if -20 <= k <= 19:
             v2 = (v[0], v[1], self._number_time_slice)
             self.add(k, v2)
@@ -43,23 +40,23 @@ class Scheduler(AdaptableHeapPriorityQueue):
         if not self.is_empty():
             job = self.remove_min()
             for i in range(job[1][0]):
-                print(job[1][1])
+                print("The job {0} requires {1} time slices.".format(job[1][1],job[1][0]))
                 self._number_time_slice += 1
                 for e in self._data:
-                    print("sono nel for")
-                    print("il numero di time slice è")
-                    print(self._number_time_slice)
-                    print("il valore di arrivo è")
-                    print(e._value[2])
-                    print("il valore dopo il quale incrementare è:")
-                    print(self._slice_to_increment)
+                    #print("sono nel for")
+                    #print("il numero di time slice è")
+                    #print(self._number_time_slice)
+                    #print("il valore di arrivo è")
+                    #print(e._value[2])
+                    #print("il valore dopo il quale incrementare è:")
+                    #print(self._slice_to_increment)
                     if (self._number_time_slice + e._value[2]) % self._slice_to_increment == 0:
-                        print("sono nell'if")
-                        print(e._key)
+                        #print("sono nell'if")
+                        #print(e._key)
                         self.update(e, e._key-1, e._value)
-                        print("dopo l'update")
-                        print(e._key)
-                        print("è buono?")
+                        #print("dopo l'update")
+                        #print(e._key)
+                        #print("è buono?")
         else:
             print("The scheduler has no tasks.")
 
@@ -71,6 +68,7 @@ time_slice = int(time_slice)
 scheduler = Scheduler(time_slice) #create a new scheduler with the desired time_slice
 for i in range(5):
     random_add(scheduler) #add five random job
+
 while 1:
     if random.random() > 0.3: #if the random value is greater than the threshold add a new job
         random_add(scheduler)
