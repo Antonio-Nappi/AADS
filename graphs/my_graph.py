@@ -31,3 +31,13 @@ class My_graph(Graph):
 
     def get_vertices(self):
         return list(self.vertices())
+
+    def not_colored_degree(self, v, outgoing=True):
+        self._validate_vertex(v)
+        c = 0
+        adj = self._outgoing if outgoing else self._incoming
+        for vertex in adj[v]:
+            if vertex.colored():
+                c += 1
+        #print("gli archi colorati del vertice {} sono: {}".format(v.element(), c))
+        return len(adj[v]) - c
