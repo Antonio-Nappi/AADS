@@ -34,7 +34,7 @@ for j in range(100):
     #for ver in graph.vertices():
         #print("outDegree del vertice {}: {}".format(ver.element(), graph.degree(ver)))
 
-    t = time.time_ns()
+    t1 = time.time_ns()
     color_vertex(graph)
     t2 = time.time_ns()
     colored = 0
@@ -42,7 +42,7 @@ for j in range(100):
         if v.colored():
             colored = colored + 1
         #print("nodo: ", v)
-    t = t2 - t
+    t = t2 - t1
     print("Execution time of graph {}:".format(j))
     print("Execution made in {0:.5f} ns".format(t))
     print("Colored nodes are: {}".format(colored))
