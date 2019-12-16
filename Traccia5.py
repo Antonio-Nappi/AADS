@@ -43,6 +43,7 @@ for j in range(100):
             colored = colored + 1
         #print("nodo: ", v)
     t = t2 - t1
+    
     print("Execution time of graph {}:".format(j))
     print("Execution made in {0:.5f} ns".format(t))
     print("Colored nodes are: {}".format(colored))
