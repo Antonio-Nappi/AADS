@@ -8,13 +8,15 @@ class ConcreteTree(Tree):
     
     class _Node:
         """Lightweight, nonpublic class for storing a node."""
-        __slots__ = '_element', '_parent', '_children'  # streamline memory usage
+        __slots__ = '_element', '_parent', '_children', '_colored', '_numb'  # streamline memory usage
 
         def __init__(self, element, parent=None, children=None):
             self._element = element
             self._parent = parent
             self._children = children
-            
+            self._colored = False
+            self._numb = 0
+
   #-------------------------- nested Position class --------------------------
     
     class Position(Tree.Position):
@@ -28,7 +30,19 @@ class ConcreteTree(Tree):
         def element(self):
           """Return the element stored at this Position."""
           return self._node._element
-          
+
+        def array_pos(self):
+            return self._node._numb
+
+        def node(self):
+            return self._node
+
+        def color(self):
+            self._node._colored = True
+
+        def set_array_position(self, index):
+            self._node._numb = index
+
         def __eq__(self, other):
           """Return True if other is a Position representing the same location."""
           return type(other) is type(self) and other._node is self._node
@@ -177,3 +191,4 @@ class ConcreteTree(Tree):
             return self.root
         else:
             return self
+        
