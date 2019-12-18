@@ -31,8 +31,8 @@ class ConcreteTree(Tree):
           """Return the element stored at this Position."""
           return self._node._element
 
-        def array_pos(self):
-            return self._node._numb
+        def get_parent_pos(self):
+            return self._node._parent._numb
 
         def node(self):
             return self._node
