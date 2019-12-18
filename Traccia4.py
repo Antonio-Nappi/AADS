@@ -19,9 +19,8 @@ def color_node(tree):
             a[i][0].colorF()
 
 
-
 def v_color(tree):
-    if tree.root() == None:
+    if tree.root() is None:
         return 0
     if tree.num_children(tree.root()) == 0:
         tree.root().colorF()
@@ -39,9 +38,11 @@ def v_color(tree):
     sizei = 1 + a
 
     sizeo = 0
-    b = 0
-    for f in tree.root().node()._children:
-        b += 1 + v_color(f)
+    # vedere solo se il children all'interno del nodo restituisce la position oppure un nodo, se è un nodo va bene, altrimenti bisogna togliere node()
+    if tree.root().node()._children is not None:
+        for c in tree.root().node()._children:
+            for f in c.node()._children:
+                sizeo += 1 + v_color(f)
 
     tree.root().node().svc(min(sizei, sizeo))
     return tree.root().node().vc()
