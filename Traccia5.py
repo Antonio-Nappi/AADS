@@ -46,6 +46,4 @@ for j in range(100):
     print("Execution time of graph {}:".format(j))
     print("Execution made in {0:.5f} ns".format(t))
     print("Colored nodes are: {}".format(colored))
-
-
-
+    
