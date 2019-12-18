@@ -36,12 +36,12 @@ def v_color(tree):
     a = 0
     for f in tree.root().node()._children:
         a += v_color(f)
-    sizeI = 1 + a
+    sizei = 1 + a
 
-    sizeO = 0
+    sizeo = 0
     b = 0
     for f in tree.root().node()._children:
         b += 1 + v_color(f)
 
-    tree.root().node().svc(min(sizeI, sizeO))
+    tree.root().node().svc(min(sizei, sizeo))
     return tree.root().node().vc()
