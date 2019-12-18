@@ -14,7 +14,7 @@ class ConcreteTree(Tree):
             self._element = element
             self._parent = parent
             self._children = children
-            self._colored = False
+            self._colored = True
             self._numb = 0
 
   #-------------------------- nested Position class --------------------------
@@ -37,8 +37,11 @@ class ConcreteTree(Tree):
         def node(self):
             return self._node
 
-        def color(self):
+        def colorT(self):
             self._node._colored = True
+
+        def colorF(self):
+            self._node._colored = False
 
         def set_array_position(self, index):
             self._node._numb = index
@@ -95,10 +98,17 @@ class ConcreteTree(Tree):
         """Return the number of children of Position p."""
         node = self._validate(p)
         count = 0
-        if node._left is not None:     # left child exists
-          count += 1
-        if node._right is not None:    # right child exists
-          count += 1
+        for f in node._children:
+            count += 1
+        return count
+
+    def num_childrenC(self, p):
+        """Return the number of children of Position p."""
+        node = self._validate(p)
+        count = 0
+        for f in node._children:
+            if not f._colored:
+                count += 1
         return count
 
   #-------------------------- nonpublic mutators --------------------------
