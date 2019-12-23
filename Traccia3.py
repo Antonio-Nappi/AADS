@@ -1,30 +1,22 @@
-from TdP_collections.graphs.graph import Graph
-
 def DFS(g,u):
+
     print(u)
-    u.visited=True
-    node=1;
-    j=0
-    while (j < len(list(g.incident_edges(u)))):
-        i=0
-        tmp=list(g.incident_edges(u))[j]._destination
-        while(i < len(list(g.incident_edges(tmp)))):
-            if(list(g.incident_edges(tmp))[i]._destination.visited==False):
-                list(g.incident_edges(tmp))[i]._destination.visited=True
-                print(list(g.incident_edges(tmp))[i]._destination._element)
-                tmp=list(g.incident_edges(tmp))[i].opposite(tmp)
-                i=0
-                node=node+1
-            else:
-                i=i+1
-        i=0
-        while(i < len(list(g.incident_edges(tmp)))):
-            if(list(g.incident_edges(tmp))[i]._origin.visited==False):
-                list(g.incident_edges(tmp))[i]._origin.visited=True
-                print(list(g.incident_edges(tmp))[i]._origin._element)
-                tmp=list(g.incident_edges(tmp))[i].opposite(tmp)
-                i=0
-                node=node+1
-            else:
-                i=i+1
-        j=j+1
+    u._pre=u
+    tmp=u
+    for e in g.incident_edges(u):
+        if(e._destination != u and e._destination._pre == None): #opposite al posto di destination
+            tmp = e._destination
+            tmp._pre = e._origin
+            print(tmp._element)
+            i=0
+            while(i < len(list(g.incident_edges(tmp)))):
+                if(list(g.incident_edges(tmp))[i]._destination != tmp and list(g.incident_edges(tmp))[i]._destination._pre == None):
+                    list(g.incident_edges(tmp))[i]._destination._pre = tmp
+                    print(list(g.incident_edges(tmp))[i]._destination._element)
+                    tmp = list(g.incident_edges(tmp))[i]._destination
+                    i=0
+                else:
+                    i=i+1
+                    if(i == len(list(g.incident_edges(tmp))) and tmp._pre!=u):
+                        tmp= tmp._pre
+                        i=0
