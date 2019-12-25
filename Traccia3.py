@@ -1,3 +1,4 @@
+from graph import Graph
 def DFS(g,u):
     nodes = []
     nodes.append(u)
