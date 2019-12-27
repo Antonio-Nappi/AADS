@@ -29,10 +29,6 @@ for j in range(100):
             if not(v == vertex or (graph.get_edge(vertex, v) is not None)):
                 if random.randint(0, 50) == 0:
                     graph.insert_edge(vertex, v)
-                    #print("Coppia di nodi", graph.get_edge(vertex, v))
-
-    #for ver in graph.vertices():
-        #print("outDegree del vertice {}: {}".format(ver.element(), graph.degree(ver)))
 
     t1 = time.time_ns()
     color_vertex(graph)

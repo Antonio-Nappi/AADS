@@ -48,10 +48,3 @@ class My_graph(Graph):
         for vertex in self.get_vertices():
             if vertex.element()==value:
                 return vertex
-
-    def stampa(self):
-        l = []
-        for vertex in self.get_vertices():
-            for edge in self.incident_edges(vertex):
-                l.append("Vertice {} collegato con il vertice {}".format(vertex,edge.opposite(vertex)))
-        return l
