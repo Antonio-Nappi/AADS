@@ -21,7 +21,7 @@ class My_graph(Graph):
             self._colored = True
 
         def __str__(self):
-            return "Nodo {0} colore {1}".format(self._element,self._colored)
+            return "Vertex {0} color {1}".format(self._element,self._colored)
 
     def not_colored_vertex(self, v):
         for edge in self.incident_edges(v):
@@ -36,8 +36,15 @@ class My_graph(Graph):
         self._validate_vertex(v)
         c = 0
         adj = self._outgoing if outgoing else self._incoming
+        '''
         for vertex in adj[v]:
             if vertex.colored():
+                #al posto di queste due istruzioni possiamo usare l'iteratore not_colored_vertex
                 c += 1
-        #print("gli archi colorati del vertice {} sono: {}".format(v.element(), c))
-        return len(adj[v]) - c
+        '''
+        return len(adj[v]) - len(list(self.not_colored_vertex(v)))
+
+    def get_vertex(self,value):
+        for vertex in self.get_vertices():
+            if vertex.element()==value:
+                return vertex
