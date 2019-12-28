@@ -34,15 +34,18 @@ class My_graph(Graph):
 
     def not_colored_degree(self, v, outgoing=True):
         self._validate_vertex(v)
+        '''
         c = 0
         adj = self._outgoing if outgoing else self._incoming
-        '''
         for vertex in adj[v]:
             if vertex.colored():
                 #al posto di queste due istruzioni possiamo usare l'iteratore not_colored_vertex
                 c += 1
+        print("Nappi: ", len(list(self.not_colored_vertex(v))))
+        print("Umberto", len(adj[v]) - c)
+        return len(adj[v]) - c
         '''
-        return len(adj[v]) - len(list(self.not_colored_vertex(v)))
+        return len(list(self.not_colored_vertex(v)))
 
     def get_vertex(self,value):
         for vertex in self.get_vertices():
