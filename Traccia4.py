@@ -15,10 +15,9 @@ def color_node(tree):
             #self._node._parent._node._numb (in concrete tree metodo get_parent_position)
             pos = a[i][0].get_parent_pos()
             a[pos][1] -= 1
-        else:
-            a[i][0].colorF()
+            a[i][0].colorT()
 
-
+'''
 def v_color(tree):
     if tree.root() is None:
         return 0
@@ -46,3 +45,4 @@ def v_color(tree):
 
     tree.root().node().svc(min(sizei, sizeo))
     return tree.root().node().vc()
+'''

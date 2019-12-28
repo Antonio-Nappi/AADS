@@ -8,15 +8,15 @@ class ConcreteTree(Tree):
     
     class _Node:
         """Lightweight, nonpublic class for storing a node."""
-        __slots__ = '_element', '_parent', '_children', '_colored', '_numb', '_vc'  # streamline memory usage
+        __slots__ = '_element', '_parent', '_children', '_colored', '_numb'#, '_vc'  # streamline memory usage
 
         def __init__(self, element, parent=None, children=None):
             self._element = element
             self._parent = parent
             self._children = children
-            self._colored = True
+            self._colored = False
             self._numb = 0
-            self._vc = 0
+            #self._vc = 0
 
   #-------------------------- nested Position class --------------------------
     
