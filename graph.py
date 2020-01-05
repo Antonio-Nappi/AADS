@@ -37,6 +37,13 @@ class Graph:
       """Return element associated with this vertex."""
       return self._element
 
+    def pre(self):
+      """Return the precedent element."""
+      return self._pre
+          
+    def set_pre(self, x=None):
+        self._pre=x
+
     def __hash__(self):         # will allow vertex to be a map/set key
       return hash(id(self))
 
