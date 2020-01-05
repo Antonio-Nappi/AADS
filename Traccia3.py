@@ -2,7 +2,7 @@ def DFS(g,u):
     '''Perform a depth-first search in a given graph g, starting from a given vertex u'''
     nodes = []                                  #nodes is the array of all discovered vertex
     nodes.append(u)
-    for e in g.incident_edges(u, True):
+    for e in g.incident_edges(u):
         if(e.opposite(u).pre()==None):
             tmp = e.opposite(u)                 #save in tmp the outgoing element not yet visited
             tmp.set_pre(u)                        #save in the attribute ._pre of the element the precedent element
