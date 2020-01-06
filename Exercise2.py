@@ -1,5 +1,4 @@
 from priority_queue.adaptable_heap_priority_queue import AdaptableHeapPriorityQueue
-import time
 import random
 
 def random_add(scheduler):

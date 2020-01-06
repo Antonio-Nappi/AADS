@@ -8,20 +8,20 @@ class ConcreteTree(Tree):
     
     class _Node:
         """Lightweight, nonpublic class for storing a node."""
-        __slots__ = '_element', '_parent', '_children', '_colored', '_numb'#, '_vc'  # streamline memory usage
+        __slots__ = '_element', '_parent', '_children', '_colored', '_pos'
 
         def __init__(self, element, parent=None, children=None):
             self._element = element
             self._parent = parent
             self._children = children
+            if self._children is None:
+                self._children = []
             self._colored = False
-            self._numb = 0
-            #self._vc = 0
+            self._pos = 0
 
   #-------------------------- nested Position class --------------------------
     
     class Position(Tree.Position):
-        
         """An abstraction representing the location of a single element."""
         def __init__(self, container, node):
           """Constructor should not be invoked by user."""
@@ -32,26 +32,20 @@ class ConcreteTree(Tree):
           """Return the element stored at this Position."""
           return self._node._element
 
-        def get_parent_pos(self):
-            return self._node._parent._numb
-
-        def vc(self):
-            return self._node._vc
-
-        def svc(self, i):
-            self._node._vc = i
+        def get_parent_position(self):
+            return self.node()._parent._pos
 
         def node(self):
             return self._node
 
-        def colorT(self):
+        def color(self):
             self._node._colored = True
 
-        def colorF(self):
-            self._node._colored = False
-
         def set_array_position(self, index):
-            self._node._numb = index
+            self._node._pos = index
+
+        def __str__(self):
+            return "Element {} colored: {}".format(self.element(),self.node()._colored)
 
         def __eq__(self, other):
           """Return True if other is a Position representing the same location."""
@@ -91,32 +85,11 @@ class ConcreteTree(Tree):
         node = self._validate(p)
         return self._make_position(node._parent)
 
-    def left(self, p):
-        """Return the Position of p's left child (or None if no left child)."""
-        node = self._validate(p)
-        return self._make_position(node._left)
-
-    def right(self, p):
-        """Return the Position of p's right child (or None if no right child)."""
-        node = self._validate(p)
-        return self._make_position(node._right)
-
-    def num_children(self, p):
-        """Return the number of children of Position p."""
-        node = self._validate(p)
-        count = 0
-        for f in node._children:
-            count += 1
-        return count
-
-    def num_childrenC(self, p):
-        """Return the number of children of Position p."""
-        node = self._validate(p)
-        count = 0
-        for f in node._children:
-            if not f._colored:
-                count += 1
-        return count
+    def children(self, p):
+        l = []
+        for e in p._node._children:
+            l.append(self._make_position(e))
+        return l
 
   #-------------------------- nonpublic mutators --------------------------
     def _add_root(self, e):
@@ -129,83 +102,22 @@ class ConcreteTree(Tree):
         self._root = self._Node(e)
         return self._make_position(self._root)
 
-    def _add_children(self, p, e):
+    def _add(self, p, e):
         """Create a new child for Position p, storing element e.
         Return the Position of new node.
-        Raise ValueError if Position p is invalid or p already has a left child.
         """
-        node = self._validate(p)
         self._size += 1
-        child = self._Node(e, node)
-        node._children.append(child)                  # node is its parent
-        return self._make_position(child)
+        node = self._Node(e, p._node)
+        p._node._children.append(node)
+        return self._make_position(node)
 
-    def _replace(self, p, e):
-        """Replace the element at position p with e, and return old element."""
+    def num_children(self, p):
+        """Return the number of children of Position p."""
         node = self._validate(p)
-        old = node._element
-        node._element = e
-        return old
+        count = 0
+        for f in node._children:
+            count += 1
+        return count
 
-    def _delete(self, p):
-        """Delete the node at Position p, and replace it with its child, if any.
-        
-        Return the element that had been stored at Position p.
-        Raise ValueError if Position p is invalid or p has two children.
-        """
-        node = self._validate(p)
-        if self.num_children(p) == 2:
-            raise ValueError('Position has two children')
-        child = node._left if node._left else node._right  # might be None
-        if child is not None:
-            child._parent = node._parent   # child's grandparent becomes parent
-        if node is self._root:
-            self._root = child             # child becomes root
-        else:
-            parent = node._parent
-            if node is parent._left:
-                parent._left = child
-            else:
-                parent._right = child
-        self._size -= 1
-        node._parent = node              # convention for deprecated node
-        return node._element
 
-    def _attach(self, p, t1, t2):
-        """Attach trees t1 and t2, respectively, as the left and right subtrees of the external Position p.
-        
-        As a side effect, set t1 and t2 to empty.
-        Raise TypeError if trees t1 and t2 do not match type of this tree.
-        Raise ValueError if Position p is invalid or not external.
-        """
-        node = self._validate(p)
-        if not self.is_leaf(p):
-            raise ValueError('position must be leaf')
-        if not type(self) is type(t1) is type(t2):    # all 3 trees must be same type
-            raise TypeError('Tree types must match')
-        self._size += len(t1) + len(t2)
-        if not t1.is_empty():         # attached t1 as left subtree of node
-              t1._root._parent = node
-              node._left = t1._root
-              t1._root = None             # set t1 instance to empty
-              t1._size = 0
-        if not t2.is_empty():         # attached t2 as right subtree of node
-              t2._root._parent = node
-              node._right = t2._root
-              t2._root = None             # set t2 instance to empty
-              t2._size = 0
 
-    def insert(self, element):
-        node = self._Node(element)
-        if self._make_position(node) is None:
-            if self.root is None:
-                self._add_root(element)
-                return node
-            if self.root.element() < node.element():
-                self.root._right = self.insert(self.root._right, node.element())
-            else:
-                self.root._left = self.insert(self.root._left, node.element())
-            return self.root
-        else:
-            return self
-        

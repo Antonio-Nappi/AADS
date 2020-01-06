@@ -8,7 +8,7 @@ def DFS(g,u):
             tmp.set_pre(u)                        #save in the attribute ._pre of the element the precedent element
             nodes.append(tmp)
             i=0                                 #index that will be used to check if a vertex has still not visited vertex
-            while(i < len(list(g.incident_edges(tmp)))):
+            while i < len(list(g.incident_edges(tmp))):
                 if(list(g.incident_edges(tmp))[i].opposite(tmp).pre() == None and list(g.incident_edges(tmp))[i].opposite(tmp)!=u):
                     list(g.incident_edges(tmp))[i].opposite(tmp).set_pre(tmp)
                     tmp = list(g.incident_edges(tmp))[i].opposite(tmp)  #if a not visited vertex is found, tmp is replaced by the new vertex untill there is not a deeper node

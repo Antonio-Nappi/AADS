@@ -31,8 +31,7 @@ class Graph:
       """Do not call constructor directly. Use Graph's insert_vertex(x)."""
       self._element = x
       self._pre = None
-    
-    
+
     def element(self):
       """Return element associated with this vertex."""
       return self._element
